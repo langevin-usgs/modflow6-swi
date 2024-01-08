@@ -17,7 +17,9 @@ class SwiAPi:
         self.head_saltwater = 0.
     
     def create_pointers(self):
-        """Create pointers to modflow variables"""
+        """Create pointers to modflow variables and store in
+           self.api_pointer.
+        """
         api_pointers = [
 
             # gwf
@@ -31,8 +33,10 @@ class SwiAPi:
 
             # npf
             ("sat", self.modelname, "npf"),
-            ("zeta", self.modelname, "npf"),
             ("condsat", self.modelname, "npf"),
+
+            # swi
+            ("zeta", self.modelname, "swi"),
         ]
         self.api_pointer = {}
         for api_pointer in api_pointers:
@@ -44,11 +48,13 @@ class SwiAPi:
             self.api_pointer[variable_name] = pointer
 
     def print_pointers(self):
+        """Print pointers stored in self.api_pointer"""
         for variable_name in self.api_pointer:
             pointer = self.api_pointer[variable_name]
             print(f"{variable_name}: {pointer}")
 
     def update_zeta(self):
+        """Recalculate zeta using the pointer to the modflow head"""
         zeta = self.api_pointer["zeta"]
         self.zeta_last = zeta.copy()
         head_freshwater = self.api_pointer["x"]
