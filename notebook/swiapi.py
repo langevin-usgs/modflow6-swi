@@ -20,7 +20,7 @@ class SwiAPi:
         self.alpha_s = self.rhos / drho
         self.head_saltwater = 0.
     
-    def create_pointers(self):
+    def create_pointers(self, verbose):
         """Create pointers to modflow variables and store in
            self.api_pointer.
         """
@@ -59,18 +59,19 @@ class SwiAPi:
 
         # add list of pointers to self.api_pointer dict
         for api_pointer in api_pointers:
-            self.add_pointer(api_pointer)
+            self.add_pointer(api_pointer, verbose)
 
         # check for storage and add storage pointers
         if self.api_pointer["insto"] > 0:
             api_pointer = ("sy", self.modelname, "sto")
-            self.add_pointer(api_pointer)
+            self.add_pointer(api_pointer, verbose)
 
-    def add_pointer(self, api_pointer):
+    def add_pointer(self, api_pointer, verbose):
         variable_name = api_pointer[0]
         args = [item.upper() for item in api_pointer]
         tag = self.mf6api.get_var_address(*args)
-        print(f"Accessing pointer using tag: {tag}")
+        if verbose:
+            print(f"Accessing pointer using tag: {tag}")
         pointer = self.mf6api.get_value_ptr(tag)
         self.api_pointer[variable_name] = pointer
 
@@ -115,19 +116,8 @@ class SwiAPi:
         sy = self.api_pointer["sy"]
         s_zeta = np.zeros(head.shape)
         idx = (zeta > bot) & (zeta <= top)
-        print(f"{idx=}")
         s_zeta[idx] = sy[idx]
-        print(f"{s_zeta=}")
-        print(f"{area=}")
-        print(f"{self.alpha_f=}")
-        print(f"{dt=}")
-        print(f"2x {s_zeta=}")
-
         sc = - self.alpha_f / dt * np.multiply(area, s_zeta)
-        print(f"{hcof=}")
-        print(f"{rhs=}")
-        print(f"{sc=}")
-        print(f"{hold=}")
         hcof[:] = sc
         rhs[:] = sc * hold
 
@@ -136,7 +126,7 @@ class SwiAPi:
             print("Initializing mf6...")
 
         self.mf6api.initialize()
-        self.create_pointers()
+        self.create_pointers(verbose)
         # self.print_pointers()
 
         current_time = 0.
@@ -182,10 +172,12 @@ class SwiAPi:
             # save zeta for this time step
             self.zeta_all.append(self.zeta_last)
 
-            print("  Finalize solve...")
+            if verbose:
+                print("  Finalize solve...")
             self.mf6api.finalize_solve(1)
             
-            print("  Finalize time step...")
+            if verbose:
+                print("  Finalize time step...")
             self.mf6api.finalize_time_step()
             current_time = self.mf6api.get_current_time()
 
