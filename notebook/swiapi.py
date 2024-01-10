@@ -1,13 +1,15 @@
 import numpy as np
+import modflowapi
 
 
 class SwiAPi:
 
-    def __init__(self, mfapi, modelname):
-        self.mfapi = mfapi
+    def __init__(self, libmf6, ws, modelname):
+        self.mf6api =  modflowapi.ModflowApi(libmf6, working_directory=ws)
         self.modelname = modelname
         self.initialize()
         self.api_pointer = {}
+        self.zeta_all = []
         return
     
     def initialize(self):
@@ -23,6 +25,10 @@ class SwiAPi:
            self.api_pointer.
         """
         api_pointers = [
+
+            # tdis
+            ("delt", 'tdis'),
+            ("nper", 'tdis'),
 
             # gwf
             ("insto", self.modelname),
@@ -63,9 +69,9 @@ class SwiAPi:
     def add_pointer(self, api_pointer):
         variable_name = api_pointer[0]
         args = [item.upper() for item in api_pointer]
-        tag = self.mfapi.get_var_address(*args)
+        tag = self.mf6api.get_var_address(*args)
         print(f"Accessing pointer using tag: {tag}")
-        pointer = self.mfapi.get_value_ptr(tag)
+        pointer = self.mf6api.get_value_ptr(tag)
         self.api_pointer[variable_name] = pointer
 
     def print_pointers(self):
@@ -109,7 +115,80 @@ class SwiAPi:
         sy = self.api_pointer["sy"]
         s_zeta = np.zeros(head.shape)
         idx = (zeta > bot) & (zeta <= top)
+        print(f"{idx=}")
         s_zeta[idx] = sy[idx]
-        sc = - self.alpha_f * area * s_zeta / dt
+        print(f"{s_zeta=}")
+        print(f"{area=}")
+        print(f"{self.alpha_f=}")
+        print(f"{dt=}")
+        print(f"2x {s_zeta=}")
+
+        sc = - self.alpha_f / dt * np.multiply(area, s_zeta)
+        print(f"{hcof=}")
+        print(f"{rhs=}")
+        print(f"{sc=}")
+        print(f"{hold=}")
         hcof[:] = sc
         rhs[:] = sc * hold
+
+    def run(self, maxiter, verbose=True):
+        if verbose:
+            print("Initializing mf6...")
+
+        self.mf6api.initialize()
+        self.create_pointers()
+        # self.print_pointers()
+
+        current_time = 0.
+        end_time = self.mf6api.get_end_time()
+        if verbose:
+            print(f"Simulation end time = {end_time}...")
+
+        # update zeta using the initial head
+        self.update_zeta()
+
+        while current_time < end_time:
+            
+            if verbose:
+                print(f"\n  Solving for time {current_time}")
+            # dt = self.mf6api.get_time_step()
+            dt = self.api_pointer["delt"]
+
+            if verbose:
+                print(f"  Prepare time step with dt={dt}...")
+            self.mf6api.prepare_time_step(dt)
+            
+            kiter = 0
+            if verbose:
+                print("  Prepare solve...")
+            self.mf6api.prepare_solve(1)
+
+            while kiter < maxiter:
+
+                if verbose:
+                    print(f"    Solve...(kiter={kiter})")
+                self.formulate(dt)
+                has_converged = self.mf6api.solve(1)
+
+                # update zeta using the recent head iterate
+                self.update_zeta()
+
+                if has_converged:
+                    break
+                kiter += 1
+
+                # swiapi.print_pointers()
+
+            # save zeta for this time step
+            self.zeta_all.append(self.zeta_last)
+
+            print("  Finalize solve...")
+            self.mf6api.finalize_solve(1)
+            
+            print("  Finalize time step...")
+            self.mf6api.finalize_time_step()
+            current_time = self.mf6api.get_current_time()
+
+        if verbose:
+            print ("Finalizing mf6...")
+        self.mf6api.finalize()
