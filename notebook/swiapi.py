@@ -2,7 +2,7 @@ import numpy as np
 import modflowapi
 
 
-class SwiAPi:
+class SwiAPI:
 
     def __init__(self, libmf6, ws, modelname):
         self.mf6api =  modflowapi.ModflowApi(libmf6, working_directory=ws)
