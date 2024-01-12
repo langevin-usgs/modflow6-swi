@@ -50,6 +50,7 @@ class SwiAPI:
             # npf
             ("sat", self.modelname, "npf"),
             ("condsat", self.modelname, "npf"),
+            ("derv_mult", self.modelname, "npf"),
 
             # swi
             ("zeta", self.modelname, "swi"),
@@ -65,6 +66,10 @@ class SwiAPI:
         if self.api_pointer["insto"] > 0:
             api_pointer = ("sy", self.modelname, "sto")
             self.add_pointer(api_pointer, verbose)
+
+        # set derivative multiplier
+        derv_mult = self.api_pointer["derv_mult"]
+        derv_mult[:] = self.alpha_f + 1.0
 
     def add_pointer(self, api_pointer, verbose):
         variable_name = api_pointer[0]
