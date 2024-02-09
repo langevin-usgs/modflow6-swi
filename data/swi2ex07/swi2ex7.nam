@@ -1,0 +1,19 @@
+# SWI2 Example 7 - Cape Cod Model
+LIST                  2 Results\swi2ex7.LST
+DIS                   3 swi2ex7.dis
+BAS6                  4 swi2ex7.ba6
+DRN                  13 swi2ex7.drn
+GHB                  17 swi2ex7.ghb
+CHD                  19 swi2ex7.chd
+RCH                  18 swi2ex7.rch
+OC                   22 swi2ex7.oc
+GMG                  23 swi2ex7.gmg
+LPF                  33 swi2ex7.lpf
+WEL                  34 swi2ex7.wel
+ZONE                 42 swi2ex7.zon
+MULT                 43 swi2ex7.mlt
+SWI2                 44 swi2ex7.swi
+DATA(BINARY)         58 Results\swi2ex7.hds  REPLACE
+DATA(BINARY)         61 Results\swi2ex7.bud  REPLACE
+DATA(BINARY)         52 Results\swi2ex7.zta  REPLACE
+DATA                 53 Results\swi2ex7.swi.obs  REPLACE     

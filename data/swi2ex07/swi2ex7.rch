@@ -1,0 +1,54 @@
+PARAMETER         17
+         1        61  NRCHOP IRCHCB
+RCH_AQ1    RCH   6.290000E-03         1
+NONE       RECH_ZONE     1
+RCH_FW7    RCH   0.000000E+00         1
+NONE       RECH_ZONE     7
+RCH_FW8    RCH   0.000000E+00         1
+NONE       RECH_ZONE     8
+RCH_FW9    RCH   3.650000E-03         1
+NONE       RECH_ZONE     9
+RCH_FW10   RCH   3.650000E-03         1
+NONE       RECH_ZONE    10
+RCH_FM5    RCH   0.000000E+00         1
+NONE       RECH_ZONE     5
+RCH_FM51    RCH   0.000000E+00        1
+NONE       RECH_ZONE    51
+RCH_FM6    RCH   0.000000E+00         1
+NONE       RECH_ZONE     6
+RCH_FM61    RCH   0.000000E+00        1
+NONE       RECH_ZONE    61
+RCH_SM4    RCH   0.000000E+00         1
+NONE       RECH_ZONE     4
+RCH_SW21    RCH   0.000000E+00        1
+NONE       RECH_ZONE    21
+RCH_SW22    RCH   0.000000E+00        1
+NONE       RECH_ZONE    22
+RCH_SW23    RCH   0.000000E+00        1
+NONE       RECH_ZONE    23
+RCH_SW24    RCH   0.000000E+00        1
+NONE       RECH_ZONE    24
+RCH_SW25    RCH   0.000000E+00        1
+NONE       RECH_ZONE    25
+RCH_SW3     RCH   0.000000E+00        1
+NONE       RECH_ZONE     3
+RCH_SW31    RCH   0.000000E+00        1
+NONE       RECH_ZONE    31
+        17         0  INRECH INIRCH
+RCH_AQ1       -1 
+RCH_FW7       -1 
+RCH_FW8       -1 
+RCH_FW9       -1 
+RCH_FW10      -1 
+RCH_FM5       -1 
+RCH_FM51      -1         
+RCH_FM6       -1         
+RCH_FM61      -1         
+RCH_SM4       -1         
+RCH_SW21      -1         
+RCH_SW22      -1         
+RCH_SW23        
+RCH_SW24        
+RCH_SW25        
+RCH_SW3        
+RCH_SW31        

@@ -1,0 +1,5 @@
+    2
+RECH_ZONE 
+OPEN/CLOSE DATA/RECH_ZONE         1 '(I5)'   -1  RECH_ZONE 
+K_ZONE    
+OPEN/CLOSE DATA/K_ZONE         1 '(I5)'   -1  K_ZONE    

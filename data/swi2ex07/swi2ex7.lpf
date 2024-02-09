@@ -1,0 +1,18 @@
+        61    888.00         5
+ 1
+ 0
+  1.00E+00
+ 0
+ 0
+HK_AQ      HK    1.000000E+00         1
+    1 K_MULT     K_ZONE        1
+HK_POND    HK    1.000000E+05         1
+    1 NONE       K_ZONE        2
+HK_PC      HK    1.000000E+00         1
+    1 K_MULT     K_ZONE        3
+HK_OC      HK    1.000000E+00         1
+    1 K_MULT     K_ZONE        4
+HK_COASTAL HK    7.000000E+01         1
+    1 NONE       K_ZONE        5
+   -1                 HK layer  1
+CONSTANT   0.000000E+00  VKA layer  1

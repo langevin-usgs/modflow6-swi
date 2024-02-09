@@ -1,0 +1,7 @@
+FREE
+OPEN/CLOSE DATA/IB_ALL         1 '(I5)'   -1  IBOUND layer  1
+    999.99  HNOFLO
+OPEN/CLOSE DATA/head.02.001.ref  1.000E+00 (FREE)   -1  SHEAD layer  1
+
+
+OPEN/CLOSE DATA/START_HEADS  1.000E+00 '(F11.2)'   -1  SHEAD layer  1
